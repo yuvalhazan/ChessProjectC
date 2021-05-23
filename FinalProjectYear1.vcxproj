@@ -142,13 +142,13 @@
     <ClCompile Include="Part1.c" />
     <ClCompile Include="Part2.c" />
     <ClCompile Include="Part3.c" />
-    <ClCompile Include="PdeusoBoard.c" />
+    <ClCompile Include="Part4.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Part1.h" />
     <ClInclude Include="Part2.h" />
     <ClInclude Include="Part3.h" />
-    <ClInclude Include="PseudoBoard.h" />
+    <ClInclude Include="Part4.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

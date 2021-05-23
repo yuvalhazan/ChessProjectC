@@ -24,7 +24,7 @@
     <ClCompile Include="Part3.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PdeusoBoard.c">
+    <ClCompile Include="Part4.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -38,7 +38,7 @@
     <ClInclude Include="Part3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PseudoBoard.h">
+    <ClInclude Include="Part4.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

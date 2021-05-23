@@ -16,8 +16,8 @@ typedef struct _chessPosArray {
     chessPos* positions;
 } chessPosArray;
 
-#define ROWS 8 //  amount of rows
-#define COLS 8 //  amount of columns
+#define ROWS 5 //  amount of rows
+#define COLS 5 //  amount of columns
 
 
 

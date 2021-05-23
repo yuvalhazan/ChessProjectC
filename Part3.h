@@ -22,16 +22,19 @@ typedef struct _pathTree {
 } pathTree;
 
 
-void findAllPossibleKnightPathsRecursive(treeNode* cur_node, int* pos_arr);
+void findAllPossibleKnightPathsRecursive(treeNode* cur_node, int* pos_arr, chessPosArray*** Array);
 pathTree findAllPossibleKnightPaths(chessPos* startingPosition);
 int TurnLetterToArrPos(char letter);
 int TurnDigitCharToArrPos(char digit);
 treeNode* MakeNewTreeNode(chessPos* pos);
-treeNodeListCell* addChildrenList(chessPos* pos,int* arr);
+treeNodeListCell* addChildrenList(chessPos* pos, int* arr, chessPosArray*** Array);
 void printTreeNode(treeNode* node);
 treeNode* createIntersection(chessPos* pos, int* pos_arr);
-bool has_no_valid_children(chessPos* startingPosition, int* check_arr);
-int count_valid_children(chessPos* startingPosition, int* check_arr);
-
+int count_valid_children(chessPos* startingPosition, int* check_arr,  chessPosArray*** Array);
+treeNode* createIntersection(chessPos* pos, int* pos_arr);
+void removeDuplicatesChildren(treeNodeListCell* start);
+void copyBoard(int arr[], int* copy);
+void fill0(int arr[]);
+bool inPseudoArray(int* arr, chessPos* pos);
 
 #endif

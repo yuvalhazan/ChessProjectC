@@ -1,31 +1,35 @@
 #include "Part1.h"
 #include "Part2.h"
 #include "Part3.h"
-#include "PseudoBoard.h"
 
 
 
 
 
 
-//void main() {
-//	pathTree Tr;
-//	chessPos A2 = { 'A','2' };
-//
-//
-//	printf("---------MAIN------\n");
-//
-//
-//	Tr = findAllPossibleKnightPaths(&A2);
-//	treeNode* root = Tr.root;
-//	printTreeNode(root);
-//	treeNode* FirstChild = root->next_possible_positions->node;
-//	treeNode* SecondChild = root->next_possible_positions->next->node;
-//	treeNode* ThirdChild = root->next_possible_positions->next->next->node;
-//	printTreeNode(FirstChild);
-//	printTreeNode(FirstChild->next_possible_positions->node);
-//	printTreeNode(FirstChild->next_possible_positions->node->next_possible_positions->node);
-//}
+void main() {
+	pathTree Tr;
+	chessPos A2 = { 'A','1' };
+
+
+	printf("---------MAIN------\n");
+
+
+		Tr = findAllPossibleKnightPaths(&A2);
+		treeNode* root = Tr.root; //A1
+		printTreeNode(root);
+		treeNode* FirstChild = root->next_possible_positions->next->node;
+	
+		printTreeNode(FirstChild); //B3
+		printTreeNode(FirstChild->next_possible_positions->next->next->node); //A5
+		printTreeNode(FirstChild->next_possible_positions->next->next->node->next_possible_positions->node); //C4
+		printTreeNode(FirstChild->next_possible_positions->next->next->node->next_possible_positions->node->next_possible_positions->node); // E5
+		printTreeNode(FirstChild->next_possible_positions->next->next->node->next_possible_positions->node->next_possible_positions->node->next_possible_positions->node); //D3
+		treeNode* d3 = FirstChild->next_possible_positions->next->next->node->next_possible_positions->node->next_possible_positions->node->next_possible_positions->node;
+		printTreeNode(d3->next_possible_positions->next->next->next->next->node); //E1
+		printTreeNode(d3->next_possible_positions->next->next->next->next->node->next_possible_positions->node); //C2
+
+}
 
 pathTree findAllPossibleKnightPaths(chessPos* startingPosition) {
 	/*
@@ -35,61 +39,61 @@ pathTree findAllPossibleKnightPaths(chessPos* startingPosition) {
 
 	pathTree ResTree; // create tree
 	ResTree.root = NULL;
-	int* locations = createEmptyPseudoBoard(); // create an empty 8X8 array of zeros
+	int locations[ROWS*COLS]; // create an empty ROWSxCOLS array of zeros
+	fill0(locations);
+	chessPosArray*** Array;
+	Array = validKnightMoves(); // calculate ALL possible knight from any position
 	ResTree.root = MakeNewTreeNode(startingPosition); // create a node with the starting position and no children
-	findAllPossibleKnightPathsRecursive(ResTree.root, locations); // send root node to recursive function to build tree
+	findAllPossibleKnightPathsRecursive(ResTree.root, locations,Array); // send root node to recursive function to build tree
 
 	return ResTree;
 }
 
 
-void findAllPossibleKnightPathsRecursive(treeNode* cur_node, int* pos_arr) {
+void findAllPossibleKnightPathsRecursive(treeNode* cur_node, int* pos_arr, chessPosArray*** Array) {
 
 
-
-
-	int* temp;
-	if (count_valid_children(&cur_node->position, pos_arr) == 0) 	//break condition
+	int temp[ROWS*COLS];
+	if (count_valid_children(&cur_node->position, pos_arr,Array) == 0) 	//break condition
 	{
 		//if the node has no children that didn't appear in the path
 		// next positions(Children list) point to NULL and return
 
 		cur_node->next_possible_positions = NULL;
-		return;
 	}
 
 	else {
 		// if there are possible location to travel to still..
-
-		insertPosToPesudoBoard(pos_arr, &cur_node->position); // put cur position in visited positions array
-
-		cur_node->next_possible_positions = addChildrenList(&cur_node->position, pos_arr); //add unused children
-
+		int letter = TurnLetterToArrPos((cur_node->position)[0]); // turn letter to array number
+		int digit = TurnDigitCharToArrPos((cur_node->position)[1]); // turn digit char to digit int
+		int pos = letter * COLS + digit;
+		pos_arr[pos] = 1;
+		cur_node->next_possible_positions = addChildrenList(&cur_node->position, pos_arr,Array); //add unused children
 		treeNodeListCell* traverse = cur_node->next_possible_positions; // point to start of list
-
-		temp = copyPseudoBoard(pos_arr); // create copy of array to send to next recursive call
+		copyBoard(temp, pos_arr);
 		while (traverse != NULL)
-
 		{
-			findAllPossibleKnightPathsRecursive(&traverse->node->position, temp);
+			findAllPossibleKnightPathsRecursive(traverse->node, temp, Array);
+			copyBoard(temp, pos_arr);
 			traverse = traverse->next;
 		}
-		free(temp);
+		
 
 	}
 
+}
 
-
-
-
+void copyBoard(int arr[],int * copy) {
+	for (int i = 0; i < ROWS*COLS; i++)
+	{
+		arr[i] = copy[i];
+	}
 }
 
 
 
+int count_valid_children(chessPos* startingPosition, int* check_arr, chessPosArray*** Array) {
 
-int count_valid_children(chessPos* startingPosition, int* check_arr) {
-	chessPosArray*** Array;
-	Array = validKnightMoves(); // calculate ALL possible knight from any position
 
 	int counter = 0;
 	int letter = TurnLetterToArrPos((*startingPosition)[0]); // turn letter to array number
@@ -104,35 +108,9 @@ int count_valid_children(chessPos* startingPosition, int* check_arr) {
 			counter++;
 		}
 	}
-	free(Array);
+
 	return counter;
 }
-bool has_no_valid_children(chessPos* startingPosition, int* check_arr) {
-	//function takes a chesspos pointer and a pseudo array 
-	// function checks if there are legitemate positions for the kingt based on the check_arr
-
-	chessPosArray*** Array;
-	Array = validKnightMoves(); // calculate ALL possible knight from any position
-
-	int unUsedCounter = 0;
-	int letter = TurnLetterToArrPos((*startingPosition)[0]); // turn letter to array number
-	int digit = TurnDigitCharToArrPos((*startingPosition)[1]); // turn digit char to digit int
-	int list_size = Array[letter][digit]->size; // how many possible locations
-	chessPosArray* posArr = Array[letter][digit];
-
-	for (int i = 0; i < list_size; i++)
-	{
-		if (inPseudoArray(check_arr, posArr->positions + i))
-		{
-			continue;
-		}
-		else {
-			return false;
-		}
-	}
-	return true;
-}
-
 
 
 int TurnLetterToArrPos(char letter) {
@@ -156,42 +134,33 @@ treeNode* MakeNewTreeNode(chessPos* pos) {
 	treeNode* node = malloc(sizeof(treeNode));
 	node->position[0] = (*pos)[0];
 	node->position[1] = (*pos)[1];
-	return node;
-}
-
-treeNode* createIntersection(chessPos* pos,int* pos_arr) {
-	// funtion takes a pointer to a chesspos
-	// Function allocates memory and fills the pos values into the node
-	// Function adds to the node a list of next possible positions for the knight
-
-	treeNode* node = MakeNewTreeNode(pos);
-
-	insertPosToPesudoBoard(pos_arr, pos);
-	node->next_possible_positions = addChildrenList(pos, pos_arr);
-
+	node->next_possible_positions = malloc(sizeof(treeNodeListCell));
 	return node;
 }
 
 
 
-treeNodeListCell* addChildrenList(chessPos* pos, int* arr) {
+
+treeNodeListCell* addChildrenList(chessPos* pos, int* arr, chessPosArray*** Array) {
 	// Function takes a pointer to a chess position
 	// Function Retruns a pointer to the first element in a linked list
 	// the memebers of the linked list are the possible positons a knight can move to from
 	// the position given as the function argument
 
-	chessPosArray*** Array;
-	Array = validKnightMoves(); // calculate ALL possible knight from any position
-
 	int unUsedCounter = 0;
 	int i = 0;
+
+
+	int counter = 0;
 	int letter = TurnLetterToArrPos((*pos)[0]); // turn letter to array number
 	int digit = TurnDigitCharToArrPos((*pos)[1]); // turn digit char to digit int
 	int list_size = Array[letter][digit]->size; // how many possible locations
-	chessPosArray* posArr = Array[letter][digit]; // array of possible locations from position
+	chessPosArray* posArr = Array[letter][digit];
+
+
 
 	treeNodeListCell* head = NULL;
-	if (has_no_valid_children(pos,arr))
+	if (count_valid_children(pos,arr,Array) == 0)
 	{
 		return NULL;
 	}
@@ -226,7 +195,7 @@ treeNodeListCell* addChildrenList(chessPos* pos, int* arr) {
 
 	}
 
-
+	removeDuplicatesChildren(head);
 	return head;
 }
 
@@ -252,10 +221,56 @@ void printTreeNode(treeNode* node) {
 }
 
 
+void removeDuplicatesChildren(treeNodeListCell* start)
+{
+	treeNodeListCell* ptr1, * ptr2, * dup;
+	ptr1 = start;
 
+	/* Pick elements one by one */
+	while (ptr1 != NULL && ptr1->next != NULL)
+	{
 
+		ptr2 = ptr1;
 
+		/* Compare the picked element with rest
+		   of the elements */
+		while (ptr2->next != NULL)
+		{
 
+			if (comparePositions(ptr1->node->position, ptr2->next->node->position))
+			{
+				/* sequence of steps is important here */
+				dup = ptr2->next;
+				ptr2->next = ptr2->next->next;
+
+			}
+			else {
+				ptr2 = ptr2->next;
+			}
+		}
+		ptr1 = ptr1->next;
+	}
+}
+
+void fill0(int arr[]) {
+	for (int i = 0; i < ROWS * COLS; i++)
+	{
+		arr[i] = 0;
+	}
+}
+
+bool inPseudoArray(int* arr, chessPos* pos) {
+
+	int letter = TurnLetterToArrPos((*pos)[0]); // turn letter to array number
+	int digit = TurnDigitCharToArrPos((*pos)[1]); // turn digit char to digit int
+	if (*(arr + letter * COLS + digit) == 1)
+	{
+		return true;
+	}
+	else {
+		return false;
+	}
+}
 
 
 

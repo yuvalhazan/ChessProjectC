@@ -51,7 +51,7 @@ chessPosArray* PositionsForSlot(int row, int col) {
       Function creates a chessPosArray and fills it with valid values
       based on row and col. The function returns the array in created.*/
 
-    chessPosArray* pos_array = (chessPosArray*)malloc(sizeof(chessPosArray)); //allocate memory 
+    chessPosArray* pos_array = (chessPosArray*)malloc(sizeof(chessPosArray)); //allocate memory
     checkMemoryAllocation(pos_array); // check allocation
 
     char letter = (char)(row + 65); // convert row int to a letter
@@ -78,7 +78,7 @@ chessPosArray* PositionsForSlot(int row, int col) {
 
     chessPos* ptr = pos_array->positions;
 
-    for (i = 0; i < 15; i = i + 2) { // Test which moves are valid 
+    for (i = 0; i < 15; i = i + 2) { // Test which moves are valid
         if (is_Valid_Location(row + moves[i], col + moves[i + 1])) {
 
             char letter = (char)((row + moves[i]) + 65);
@@ -150,4 +150,3 @@ void checkMemoryAllocation(void* ptr)
         exit(1);
     }
 }
-
