@@ -7,29 +7,29 @@
 
 
 
-void main() {
-	pathTree Tr;
-	chessPos A2 = { 'A','1' };
-
-
-	printf("---------MAIN------\n");
-
-
-		Tr = findAllPossibleKnightPaths(&A2);
-		treeNode* root = Tr.root; //A1
-		printTreeNode(root);
-		treeNode* FirstChild = root->next_possible_positions->next->node;
-	
-		printTreeNode(FirstChild); //B3
-		printTreeNode(FirstChild->next_possible_positions->next->next->node); //A5
-		printTreeNode(FirstChild->next_possible_positions->next->next->node->next_possible_positions->node); //C4
-		printTreeNode(FirstChild->next_possible_positions->next->next->node->next_possible_positions->node->next_possible_positions->node); // E5
-		printTreeNode(FirstChild->next_possible_positions->next->next->node->next_possible_positions->node->next_possible_positions->node->next_possible_positions->node); //D3
-		treeNode* d3 = FirstChild->next_possible_positions->next->next->node->next_possible_positions->node->next_possible_positions->node->next_possible_positions->node;
-		printTreeNode(d3->next_possible_positions->next->next->next->next->node); //E1
-		printTreeNode(d3->next_possible_positions->next->next->next->next->node->next_possible_positions->node); //C2
-
-}
+//void main() {
+//	pathTree Tr;
+//	chessPos A2 = { 'A','1' };
+//
+//
+//	printf("---------MAIN------\n");
+//
+//
+//		Tr = findAllPossibleKnightPaths(&A2);
+//		treeNode* root = Tr.root; //A1
+//		printTreeNode(root);
+//		treeNode* FirstChild = root->next_possible_positions->next->node;
+//	
+//		printTreeNode(FirstChild); //B3
+//		printTreeNode(FirstChild->next_possible_positions->next->next->node); //A5
+//		printTreeNode(FirstChild->next_possible_positions->next->next->node->next_possible_positions->node); //C4
+//		printTreeNode(FirstChild->next_possible_positions->next->next->node->next_possible_positions->node->next_possible_positions->node); // E5
+//		printTreeNode(FirstChild->next_possible_positions->next->next->node->next_possible_positions->node->next_possible_positions->node->next_possible_positions->node); //D3
+//		treeNode* d3 = FirstChild->next_possible_positions->next->next->node->next_possible_positions->node->next_possible_positions->node->next_possible_positions->node;
+//		printTreeNode(d3->next_possible_positions->next->next->next->next->node); //E1
+//		printTreeNode(d3->next_possible_positions->next->next->next->next->node->next_possible_positions->node); //C2
+//
+//}
 
 pathTree findAllPossibleKnightPaths(chessPos* startingPosition) {
 	/*
@@ -68,13 +68,15 @@ void findAllPossibleKnightPathsRecursive(treeNode* cur_node, int* pos_arr, chess
 		int digit = TurnDigitCharToArrPos((cur_node->position)[1]); // turn digit char to digit int
 		int pos = letter * COLS + digit;
 		pos_arr[pos] = 1;
-		cur_node->next_possible_positions = addChildrenList(&cur_node->position, pos_arr,Array); //add unused children
+
+		cur_node->next_possible_positions = addChildrenList(&cur_node->position, pos_arr,Array); //add walkable children nodes
 		treeNodeListCell* traverse = cur_node->next_possible_positions; // point to start of list
-		copyBoard(temp, pos_arr);
+		copyBoard(temp, pos_arr); // save copy of array
+
 		while (traverse != NULL)
 		{
-			findAllPossibleKnightPathsRecursive(traverse->node, temp, Array);
-			copyBoard(temp, pos_arr);
+			findAllPossibleKnightPathsRecursive(traverse->node, temp, Array); // send empty children to next call
+			copyBoard(temp, pos_arr); // restore the array to how it was before previous call
 			traverse = traverse->next;
 		}
 		
@@ -93,7 +95,8 @@ void copyBoard(int arr[],int * copy) {
 
 
 int count_valid_children(chessPos* startingPosition, int* check_arr, chessPosArray*** Array) {
-
+	// function takes a chesspos* int arr and chessPosArray***,
+	// function return the amount of children that are valid to walk to based on Array and check_arr
 
 	int counter = 0;
 	int letter = TurnLetterToArrPos((*startingPosition)[0]); // turn letter to array number
@@ -132,6 +135,7 @@ treeNode* MakeNewTreeNode(chessPos* pos) {
 	// Function allocates memory for a tree node and puts the values from the pos
 	// into the TreeNode position struct it then returns the pointer to the node
 	treeNode* node = malloc(sizeof(treeNode));
+	checkMemoryAllocation(node);
 	node->position[0] = (*pos)[0];
 	node->position[1] = (*pos)[1];
 	node->next_possible_positions = malloc(sizeof(treeNodeListCell));
@@ -202,6 +206,8 @@ treeNodeListCell* addChildrenList(chessPos* pos, int* arr, chessPosArray*** Arra
 
 
 void printTreeNode(treeNode* node) {
+	// function takes a pointer to a tree node
+	// function prints the node and it's children
 	if (node == NULL)
 	{
 		printf("points to NULL\n");
