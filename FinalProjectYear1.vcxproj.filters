@@ -27,6 +27,15 @@
     <ClCompile Include="Part4.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Part7.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Part5.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Part6.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Part1.h">
@@ -39,6 +48,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Part4.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Part7.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Part5.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

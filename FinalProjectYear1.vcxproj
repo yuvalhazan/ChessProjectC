@@ -143,12 +143,17 @@
     <ClCompile Include="Part2.c" />
     <ClCompile Include="Part3.c" />
     <ClCompile Include="Part4.c" />
+    <ClCompile Include="Part5.c" />
+    <ClCompile Include="Part6.c" />
+    <ClCompile Include="Part7.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Part1.h" />
     <ClInclude Include="Part2.h" />
     <ClInclude Include="Part3.h" />
     <ClInclude Include="Part4.h" />
+    <ClInclude Include="Part5.h" />
+    <ClInclude Include="Part7.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -2,20 +2,20 @@
 
 
 
-void main() {
-
-    pathTree Tr;
-    chessPos A2 = { 'A','1' };
-    chessPosList* ls;
-
-    
-    printf("---------MAIN------\n");
-    
-    
-    Tr = findAllPossibleKnightPaths(&A2);
-    ls = findKnightPathCoveringAllBoard(&Tr);
-    printFullKnightPath(ls);
-}
+//void main() {
+//
+//    pathTree Tr;
+//    chessPos A2 = { 'A','1' };
+//    chessPosList* ls;
+//
+//    
+//    printf("---------MAIN------\n");
+//    
+//    
+//    Tr = findAllPossibleKnightPaths(&A2);
+//    ls = findKnightPathCoveringAllBoard(&Tr);
+//    printFullKnightPath(ls);
+//}
 
 void printFullKnightPath(chessPosList* ls) {
     chessPosCell* traverse;
