@@ -9,14 +9,14 @@
 
 
 typedef unsigned char Byte;
-typedef unsigned char BYTE;
+
+
 
 Byte* getBytesArr(chessPosList* pos_list, int len, int* p_size);
 void updateIndexs(int nextEmptyBit, int* bitIndex, int* indexOfBytesArr, int* chessPosIndex);
 Byte getByteFrom_chessPosList(int listLocation, int  type, chessPosList lst);
-int listLen(chessPosList* list);
 void saveListToBinFile(char* file_name, chessPosList* pos_list);
-void checkAllocation(void* ptr);
+
 
 #endif
 

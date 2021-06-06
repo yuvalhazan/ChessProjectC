@@ -144,7 +144,6 @@
     <ClCompile Include="Part3.c" />
     <ClCompile Include="Part4.c" />
     <ClCompile Include="Part5.c" />
-    <ClCompile Include="Part6.c" />
     <ClCompile Include="Part7.c" />
   </ItemGroup>
   <ItemGroup>

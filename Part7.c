@@ -1,31 +1,46 @@
 #include "Part7.h"
 
-void print_menu();
-chessPos* get_knight_pos();
-void program_loop();
+
 
 void main() {
 
     program_loop();
 }
 
+
 chessPos* get_knight_pos() {
 
     char letter, digit;
+    bool validInput = false;
     chessPos* pos = malloc(sizeof(chessPos));
     checkMemoryAllocation(pos);
-    getchar();
-    printf("Enter Letter ('A','B','C'...)\n");
-    letter = getchar();
-    getchar();
-    printf("Enter Digit ('1','2','3'...)\n");
+    
 
-    digit = getchar();
+    while (validInput == false)
+    {
+        getchar();
+        printf("Enter Letter ('A','B','C'...)\n");
 
-    *pos[0] = letter;
-    (*pos)[1] = digit;
+        letter = getchar();
+
+        getchar();
+        printf("Enter Digit ('1','2','3'...)\n");
+
+        digit = getchar();
+
+        *pos[0] = letter;
+        (*pos)[1] = digit;
+
+        if (letter >= 'A' && letter <= 'A' +ROWS && digit >= '1' && digit <= '1' + ROWS)
+        /*checking valid input*/
+        {
+            validInput = true;
+        }
+       
+    }
     printf("You chose the position: ");
     printChessPos(pos);
+    printf("\n");
     return pos;
 }
 
@@ -39,15 +54,51 @@ void print_menu() {
     printf("6. Exit\n");
 }
 
+char* getFileName() {
+    /* Function takes nothing*/
+    /* takes accepts from user a string of unknown length */
+    char* str;
+    int logSize = 0, phySize = 1;
+    char c;
+
+    str = (char*)malloc(sizeof(char) * phySize);
+    checkMemoryAllocation(str);
+    c = getchar();
+
+    while (c != '\n')
+    {
+        if (logSize == phySize)
+        {
+            phySize *= 2;
+            str = (char*)realloc(str, sizeof(char) * phySize);
+        }
+
+        str[logSize] = c;
+        logSize++;
+        c = getchar();
+    }
+
+    str = (char*)realloc(str, sizeof(char) * (logSize + 1));
+    str[logSize] = '\0';
+
+    return str;
+}
+
 void program_loop() {
 
     pathTree Tr;
     Tr.root = NULL;
     char choice;
+    char* fileName;
     chessPos* pos = NULL;
     chessPosList* path = NULL;
+
+
+
     print_menu();
     choice = getchar();
+
+
     while (true)
     {
         if (choice == '1')
@@ -61,6 +112,7 @@ void program_loop() {
             }
             else {
                 Tr = findAllPossibleKnightPaths(pos);
+                printf("Created a tree of all possible knight paths succesfully!\n");
             }
         }
         else if (choice == '3') {
@@ -77,9 +129,19 @@ void program_loop() {
                 path = findKnightPathCoveringAllBoard(&Tr);
             }
         }
+
         else if (choice == '4') {
-            printf("Not implemented yet!\n");
-            break;
+            if (pos == NULL)
+            {
+                printf("You have to enter a position first!\n");
+            }
+            else
+            {
+                printFullKnightPath(path);
+                saveListToBinFile("test.bin", path);
+            }
+
+
         }
         else if (choice == '5') {
             printf("Not implemented yet!\n");
@@ -90,7 +152,7 @@ void program_loop() {
             break;
         }
         else {
-            printf("please enter a valid choice\n");
+            printf("please enter a valid choice from the menu \n");
         }
         choice = getchar();
     }

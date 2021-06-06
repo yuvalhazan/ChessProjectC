@@ -13,24 +13,35 @@ void insertDataToEndChessPosList(chessPosList* lst, char posLetter, char posNum)
 void freeChessPosList(chessPosList* lst);
 void insertNodeToEndChessPosList(chessPosList* lst, chessPosCell* newTail);
 
+void printbin(Byte byte) {
 
-//void main() {
-//
-//	chessPosList lst;
-//	chessPosCell cell6 = { {'E','1'},NULL };
-//	chessPosCell cell5 = { {'A','4'},&cell6 };
-//	chessPosCell cell4 = { {'H','5'},&cell5 };
-//	chessPosCell cell3 = { {'D','8'},&cell4 };
-//	chessPosCell cell2 = { {'H','5'},&cell3 };
-//	chessPosCell cell1 = { {'A','4'},&cell2 };
-//
-//
-//	lst.head = &cell1;
-//	lst.tail = &cell6;
-//	saveListToBinFile("file.bin", &lst);
-//	checkAndDisplayPathFromFile("file.bin");
-//
-//}
+	int i, mask;
+	for (int i = 7; i >= 0; i--) {
+		mask = 1 << i;
+		printf("%c", mask & byte ? '1' : '0');
+	}
+}
+void main() {
+
+	Byte firstByte;
+	chessPosList lst;
+	chessPosCell cell6 = { {'B','1'},NULL };
+	chessPosCell cell5 = { {'A','4'},&cell6 };
+	chessPosCell cell4 = { {'D','1'},&cell5 };
+	chessPosCell cell3 = { {'C','1'},&cell4 };
+	chessPosCell cell2 = { {'B','3'},&cell3 };
+	chessPosCell cell1 = { {'A','1'},&cell2 };
+
+
+	lst.head = &cell1;
+	lst.tail = &cell6;
+	int size;
+
+	saveListToBinFile("file.bin", &lst);
+	checkAndDisplayPathFromFile("file.bin");
+
+
+}
 
 chessPosCell* createNewChessPosListNode(char posLetter,char posNum, chessPosCell* next) {
 
@@ -43,6 +54,7 @@ chessPosCell* createNewChessPosListNode(char posLetter,char posNum, chessPosCell
 	return output;
 
 }
+
 int getListSize(chessPosList posList) {
 
 	int counter = 0;
@@ -59,7 +71,10 @@ void makeEmptyChessPosList(chessPosList* posList) {
 
 	posList->head = NULL;
 	posList->tail = NULL;
+
 }
+
+
 int checkAndDisplayPathFromFile(char* file_name)
 {
 	int i;
@@ -76,6 +91,9 @@ int checkAndDisplayPathFromFile(char* file_name)
 
 	fread(&size, sizeof(short int), 1, binFile);
 
+	printf("There are %d in the list\n", size); /*aidasdanio*/
+
+
 	chessPosList posList;
 	makeEmptyChessPosList(&posList);
 
@@ -90,20 +108,20 @@ int checkAndDisplayPathFromFile(char* file_name)
 
 		tempPosRow = row + 'A';
 		tempPosCol = col + '1';
+
+
 		countPos++;
 
-		if (!isNextPosValid(&posList, posList.tail, tempPosRow, tempPosCol))
-			return 1; /* if path isn't valid */
 
 		row = 0;
 		col = 0;
 		if (fread(&secondByte, sizeof(BYTE), 1, binFile))
 		{
 			row |= (firstByte & mask2bit);
-			//row &= mask2bit;
+
 			row = row << 1;
 			row |= secondByte >> 7;
-			//row = row & mask1bit;
+
 
 			col |= secondByte >> 4;
 			col &= mask3bit;
@@ -112,8 +130,6 @@ int checkAndDisplayPathFromFile(char* file_name)
 			tempPosCol = col + '1';
 			countPos++;
 
-			if (!isNextPosValid(&posList, posList.tail, tempPosRow, tempPosCol))
-				return 1; /* if path isn't valid */
 		}
 
 		row = 0;
@@ -131,9 +147,6 @@ int checkAndDisplayPathFromFile(char* file_name)
 			tempPosCol = col + '1';
 			countPos++;
 
-			if (!isNextPosValid(&posList, posList.tail, tempPosRow, tempPosCol))
-				return 1; /* if path isn't valid */
-
 			row = 0;
 			col = 0;
 			if (countPos != size)
@@ -147,8 +160,6 @@ int checkAndDisplayPathFromFile(char* file_name)
 				tempPosCol = col + '1';
 				countPos++;
 
-				if (!isNextPosValid(&posList, posList.tail, tempPosRow, tempPosCol))
-					return 1; /* if path isn't valid */
 			}
 		}
 
@@ -171,14 +182,16 @@ bool isNextPosValid(chessPosList* lst, chessPosCell* firstPos, char nextPosRow, 
 	int i;
 	int firstPosRow, firstPosCol, validRow, validCol, size;
 
-	firstPosRow = firstPos->position[0] - 'A';
-	firstPosCol = firstPos->position[1] - '1';
-
 	if (firstPos == NULL)
 	{
 		insertDataToEndChessPosList(lst, nextPosRow, nextPosCol);
 		return true;
 	}
+
+	firstPosRow = firstPos->position[0] - 'A';
+	firstPosCol = firstPos->position[1] - '1';
+
+
 
 	chessPosArray*** chessBoard = validKnightMoves();
 	size = chessBoard[firstPosRow][firstPosCol]->size;

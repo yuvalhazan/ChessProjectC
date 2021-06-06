@@ -5,7 +5,7 @@
 //void main() {
 //
 //    pathTree Tr;
-//    chessPos A2 = { 'A','1' };
+//    chessPos A2 = { 'C','3' };
 //    chessPosList* ls;
 //
 //    
@@ -69,6 +69,7 @@ chessPosList* findKnightPathCoveringAllBoard(pathTree* path_tree) {
     }
     ls->tail = traverse;
 
+    ls->tail->next = NULL;
     return ls;
 
 }
