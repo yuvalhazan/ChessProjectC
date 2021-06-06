@@ -5,14 +5,11 @@ Byte* getBytesArr(chessPosList* pos_list, int len, int* p_size) {
 	int type = 0, bitIndex, indexOfBytesArr, chessPosIndex, diff; // type define`s if row or col.
 	// bytesArrSize := compute the amount of bytes required.
 	int bytesArrSize = (int)((len * 6) / 8) + ((len * 6) % 8 == 0 ? 0 : 1);
-
-
 	Byte* bytesArr = (Byte*)calloc(bytesArrSize, sizeof(Byte));
 	Byte inputMask = 0x7; // mask: 0000 0111
 	checkMemoryAllocation(bytesArr);
-
+	
 	for (int nextEmptyBit = 0; nextEmptyBit < len * 6; nextEmptyBit += 3) {
-
 		updateIndexs(nextEmptyBit, &bitIndex, &indexOfBytesArr, &chessPosIndex);
 		diff = (type == 0 ? 'A' : 1);
 		Byte temp = getByteFrom_chessPosList(chessPosIndex, type, *pos_list);
@@ -32,7 +29,6 @@ Byte* getBytesArr(chessPosList* pos_list, int len, int* p_size) {
 	*p_size = bytesArrSize;
 	return bytesArr;
 }
-
 
 void updateIndexs(int nextEmptyBit, int* bitIndex, int* indexOfBytesArr, int* chessPosIndex) {
 
@@ -55,15 +51,29 @@ Byte getByteFrom_chessPosList(int listLocation, int  type, chessPosList lst) {
 
 }
 
+/*assist func to #5 but add to list file*/
+int listLen(chessPosList* list) {
+
+	int count = 0;
+	chessPosCell* current = list->head;
+
+	while (current != NULL) {
+		current = current->next;
+		count++;
+	}
+
+	return count;
+}
 
 
+//////////submit func #5////////
 void saveListToBinFile(char* file_name, chessPosList* pos_list) {
 
 	FILE* data = fopen(file_name, "wb");
 	checkMemoryAllocation(data);
 
 	int size = 0;
-	short int len = len_list(pos_list);
+	short int len = listLen(pos_list);
 	Byte* bytesArr = getBytesArr(pos_list, len, &size);
 
 	fwrite(&len, sizeof(short int), 1, data);

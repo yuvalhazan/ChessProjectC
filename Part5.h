@@ -16,7 +16,7 @@ Byte* getBytesArr(chessPosList* pos_list, int len, int* p_size);
 void updateIndexs(int nextEmptyBit, int* bitIndex, int* indexOfBytesArr, int* chessPosIndex);
 Byte getByteFrom_chessPosList(int listLocation, int  type, chessPosList lst);
 void saveListToBinFile(char* file_name, chessPosList* pos_list);
-
+int listLen(chessPosList* list);
 
 #endif
 

@@ -111,7 +111,7 @@ int checkAndDisplayPathFromFile(char* file_name)
 
 
 		countPos++;
-
+		printf("%c %c\n", tempPosRow, tempPosCol);
 
 		row = 0;
 		col = 0;
@@ -129,7 +129,7 @@ int checkAndDisplayPathFromFile(char* file_name)
 			tempPosRow = row + 'A';
 			tempPosCol = col + '1';
 			countPos++;
-
+			printf("%c %c\n", tempPosRow, tempPosCol);
 		}
 
 		row = 0;
@@ -146,7 +146,7 @@ int checkAndDisplayPathFromFile(char* file_name)
 			tempPosRow = row + 'A';
 			tempPosCol = col + '1';
 			countPos++;
-
+			printf("%c %c\n", tempPosRow, tempPosCol);
 			row = 0;
 			col = 0;
 			if (countPos != size)
@@ -159,7 +159,7 @@ int checkAndDisplayPathFromFile(char* file_name)
 				tempPosRow = row + 'A';
 				tempPosCol = col + '1';
 				countPos++;
-
+				printf("%c %c\n", tempPosRow, tempPosCol);
 			}
 		}
 
